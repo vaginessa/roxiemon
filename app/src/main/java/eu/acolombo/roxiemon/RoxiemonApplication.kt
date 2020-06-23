@@ -12,7 +12,6 @@ import org.koin.dsl.module
 class RoxiemonApplication : Application() {
 
     private val appModule = module {
-
         single { PokemonRepository() }
         viewModel { PokemonViewModel(get()) }
         viewModel { PokemonListViewModel(get()) }

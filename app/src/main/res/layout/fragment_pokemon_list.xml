@@ -6,8 +6,8 @@
     android:name="eu.acolombo.roxiemon.presentation.PokemonFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="@dimen/text_margin"
-    android:layout_marginRight="@dimen/text_margin"
+    android:layout_marginLeft="@dimen/spacing_m"
+    android:layout_marginRight="@dimen/spacing_m"
     app:layoutManager="LinearLayoutManager"
     tools:context=".presentation.PokemonListFragment"
     tools:listitem="@layout/item_pokemon" />

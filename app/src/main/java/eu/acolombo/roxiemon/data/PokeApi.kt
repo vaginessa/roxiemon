@@ -1,5 +1,7 @@
 package eu.acolombo.roxiemon.data
 
+import eu.acolombo.roxiemon.data.response.ListResponse
+import eu.acolombo.roxiemon.data.response.NamedItem
 import eu.acolombo.roxiemon.data.model.Pokemon
 import eu.acolombo.roxiemon.data.model.Type
 import okhttp3.OkHttpClient
@@ -10,18 +12,18 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface TMDbApi {
+interface PokeApi {
 
     companion object {
         const val PAGE_SIZE = 20
         private const val ROOT_ENDPOINT = "https://pokeapi.co/api/v2/"
 
-        fun create(): TMDbApi = Retrofit.Builder()
+        fun create(): PokeApi = Retrofit.Builder()
             .baseUrl(ROOT_ENDPOINT)
             .client(OkHttpClient.Builder().build())
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
-            .create(TMDbApi::class.java)
+            .create(PokeApi::class.java)
     }
 
     @GET("pokemon")
@@ -49,20 +51,5 @@ interface TMDbApi {
     fun getType(
         @Path("name") name: String
     ): Call<Type>
-
-    data class ListResponse<T>(
-        val count: Int?,
-        val next: String?,
-        val previous: String?,
-        val results: List<Item<T>>?
-    )
-
-    interface Item<T> {
-        val url: String
-    }
-
-    interface NamedItem<T> : Item<T> {
-        val name: String
-    }
 
 }
