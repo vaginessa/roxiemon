@@ -30,7 +30,7 @@ interface PokeApi {
     fun getPokemon(
         @Query("limit") limit: Int = PAGE_SIZE,
         @Query("offset") offset: Int = PAGE_SIZE
-    ): Call<ListResponse<NamedItem<Pokemon>>>
+    ): Call<ListResponse<NamedItem<Pokemon>, Pokemon>>
 
     @GET("pokemon/{id}")
     fun getPokemon(

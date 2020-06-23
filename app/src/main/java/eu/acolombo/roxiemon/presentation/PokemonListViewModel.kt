@@ -1,12 +1,10 @@
 package eu.acolombo.roxiemon.presentation
 
-import com.ww.roxie.BaseAction
-import com.ww.roxie.BaseState
+import androidx.lifecycle.viewModelScope
 import com.ww.roxie.BaseViewModel
 import com.ww.roxie.Reducer
 import eu.acolombo.roxiemon.data.PokemonRepository
-import eu.acolombo.roxiemon.data.model.Pokemon
-import eu.acolombo.roxiemon.presentation.PokemonListViewModel.*
+import kotlinx.coroutines.launch
 
 class PokemonListViewModel(val pokemonRepository: PokemonRepository) : BaseViewModel<Action, State>() {
 
@@ -28,24 +26,18 @@ class PokemonListViewModel(val pokemonRepository: PokemonRepository) : BaseViewM
                 isLoading = false,
                 isError = true
             )
+            is Change.GoToPokemon -> state.copy(
+                isLoading = true,
+                goToPokemon = change.id,
+                isError = false,
+                isIdle = false
+            )
         }
     }
 
-    sealed class Action : BaseAction {
-        object LoadPokemonList : Action()
+    init {
+        dispatch(Action.LoadPokemonList)
     }
 
-    sealed class Change {
-        object Loading : Change()
-        data class PokemonList(val pokemon: List<Pokemon>) : Change()
-        data class Error(val throwable: Throwable?) : Change()
-    }
-
-    data class State(
-        val pokemon: List<Pokemon> = listOf(),
-        val isIdle: Boolean = false,
-        val isLoading: Boolean = false,
-        val isError: Boolean = false
-    ) : BaseState
 
 }

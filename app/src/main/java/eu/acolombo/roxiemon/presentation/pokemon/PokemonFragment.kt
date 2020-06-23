@@ -1,12 +1,27 @@
 package eu.acolombo.roxiemon.presentation.pokemon
 
 
+import android.os.Bundle
 import androidx.fragment.app.Fragment
 import eu.acolombo.roxiemon.R
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class PokemonFragment : Fragment(R.layout.fragment_pokemon) {
 
-    private val viewModel: PokemonViewModel by viewModel()
+    companion object {
+        private const val POKEMON_ID = "pokemonId"
+
+        fun newInstance(id: Int) = PokemonFragment().apply {
+            arguments = Bundle().apply { putInt(POKEMON_ID, id) }
+        }
+    }
+
+    private val viewModel: PokemonViewModel by viewModel {
+        parametersOf(this,  arguments?.getInt(POKEMON_ID) ?: throw IllegalArgumentException("id is required"))
+    }
+
+
+
 
 }

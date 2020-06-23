@@ -7,7 +7,7 @@ import eu.acolombo.roxiemon.data.PokemonRepository
 import eu.acolombo.roxiemon.data.model.Pokemon
 import eu.acolombo.roxiemon.presentation.pokemon.PokemonViewModel.*
 
-class PokemonViewModel(val pokemonRepository: PokemonRepository) : BaseViewModel<Action, State>() {
+class PokemonViewModel(val id: Int, val pokemonRepository: PokemonRepository) : BaseViewModel<Action, State>() {
 
     override val initialState: State = State(isIdle = true)
 

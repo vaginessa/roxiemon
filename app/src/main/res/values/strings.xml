@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">roxiemon</string>
+    <string name="pokemon_list_error">Error</string>
 </resources>
