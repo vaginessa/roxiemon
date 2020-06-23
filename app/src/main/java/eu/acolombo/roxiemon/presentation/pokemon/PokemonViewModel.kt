@@ -11,6 +11,16 @@ class PokemonViewModel(val pokemonRepository: PokemonRepository) : BaseViewModel
 
     override val initialState: State = State(isIdle = true)
 
+    sealed class Action : BaseAction {
+        data class LoadPokemon(val pokemonId: Int) : Action()
+    }
+
+    sealed class Change {
+        object Loading : Change()
+        data class PokemonDetail(val pokemon: Pokemon) : Change()
+        data class Error(val throwable: Throwable?) : Change()
+    }
+
     data class State(
         val pokemon: List<Pokemon> = listOf(),
         val isIdle: Boolean = false,
@@ -18,8 +28,6 @@ class PokemonViewModel(val pokemonRepository: PokemonRepository) : BaseViewModel
         val isError: Boolean = false
     ) : BaseState
 
-    sealed class Action : BaseAction {
-        data class LoadPokemon(val pokemonId: Int) : Action()
-    }
+
 
 }
