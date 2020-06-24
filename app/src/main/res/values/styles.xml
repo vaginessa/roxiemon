@@ -1,7 +1,17 @@
 <resources>
-    <style name="RoxiemonTheme" parent="Theme.AppCompat.DayNight">
+    <style name="Roxiemon" parent="Theme.AppCompat.DayNight">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="fontFamily">@font/karla</item>
+        <item name="bottomSheetDialogTheme">@style/Roxiemon.BottomSheetDialog</item>
+    </style>
+
+    <style name="Roxiemon.BottomSheetDialog" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.Roxiemon.BottomSheet</item>
+    </style>
+
+    <style name="Widget.Roxiemon.BottomSheet" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_bottom_sheet</item>
     </style>
 </resources>
