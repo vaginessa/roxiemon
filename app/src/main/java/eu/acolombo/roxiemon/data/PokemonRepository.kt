@@ -12,6 +12,7 @@ class PokemonRepository(private val pokeApi: PokeApi) {
         .subscribeOn(Schedulers.io())
         .flatMap { it.results.toObservable() }
         .flatMap { pokeApi.getPokemon(it.name).subscribeOn(Schedulers.io()) }
-        .map { Pokemon(it.id, it.name, it.sprites.front_default, emptyList()) }
+        .map { Pokemon(it.id, it.name, it.sprites.front_default, it.sprites.back_default, emptyList()) }
         .toSortedList()
+
 }

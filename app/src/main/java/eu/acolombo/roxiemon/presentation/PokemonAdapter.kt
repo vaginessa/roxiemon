@@ -7,11 +7,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import eu.acolombo.roxiemon.R
 import eu.acolombo.roxiemon.data.local.model.Pokemon
+import eu.acolombo.roxiemon.util.load
 
-class PokemonAdapter(val onClick: (id: Int) -> Unit = {} ) : RecyclerView.Adapter<PokemonAdapter.ViewHolder>() {
+class PokemonAdapter(val onClick: (id: Int) -> Unit = {}) :
+    RecyclerView.Adapter<PokemonAdapter.ViewHolder>() {
 
     private val _values: MutableList<Pokemon> = mutableListOf()
     var values: List<Pokemon>
@@ -27,7 +28,7 @@ class PokemonAdapter(val onClick: (id: Int) -> Unit = {} ) : RecyclerView.Adapte
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        Glide.with(holder.view.context).load(item.image).into(holder.imageView);
+        holder.imageView.load(item.imageBack)
         holder.numberView.text = item.id.toString()
         holder.nameView.text = item.name
         holder.view.setOnClickListener { onClick(item.id) }

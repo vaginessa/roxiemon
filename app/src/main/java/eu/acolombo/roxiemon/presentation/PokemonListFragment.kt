@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import eu.acolombo.roxiemon.R
@@ -44,8 +43,7 @@ class PokemonListFragment : Fragment(R.layout.fragment_pokemon_list) {
 
     private fun showError(error: Boolean) {
         if (error) {
-            Toast.makeText(context, getString(R.string.pokemon_list_error), Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(context, getString(R.string.pokemon_list_error), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -55,9 +53,8 @@ class PokemonListFragment : Fragment(R.layout.fragment_pokemon_list) {
 
     private fun goToPokemon(id: Int?) {
         id?.let {
-            requireActivity().supportFragmentManager.commit {
-                replace(R.id.container, PokemonFragment.newInstance(it))
-            }
+            PokemonFragment.newInstance(it)
+                .show(requireActivity().supportFragmentManager, PokemonFragment::class.java.name)
         }
     }
 

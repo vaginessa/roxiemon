@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="spacing_s">16dp</dimen>
+    <dimen name="spacing_s">4dp</dimen>
     <dimen name="spacing_m">16dp</dimen>
+
+    <dimen name="pokemon_image">60dp</dimen>
+    <dimen name="item_height">160dp</dimen>
 </resources>

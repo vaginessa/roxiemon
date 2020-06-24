@@ -1,28 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/item_height"
+    android:background="?android:attr/selectableItemBackgroundBorderless"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_m">
 
     <ImageView
         android:id="@+id/imagePokemon"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spacing_s"
-        android:contentDescription="@string/pokemon_image" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:contentDescription="@string/pokemon_image"
+        android:scaleType="fitCenter"
+        tools:src="@mipmap/ic_launcher" />
 
     <TextView
         android:id="@+id/textNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/spacing_m"
-        android:layout_marginRight="@dimen/spacing_m"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:layout_margin="@dimen/spacing_s"
+        android:alpha=".4"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        tools:text="1" />
 
     <TextView
         android:id="@+id/textName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spacing_m"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:textAllCaps="true"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="13sp"
+        tools:text="bulbasaur" />
 </LinearLayout>
