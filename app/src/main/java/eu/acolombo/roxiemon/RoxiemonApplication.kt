@@ -2,7 +2,7 @@ package eu.acolombo.roxiemon
 
 import android.app.Application
 import com.ww.roxie.Roxie
-import eu.acolombo.roxiemon.data.PokeApi
+import eu.acolombo.roxiemon.data.remote.PokeApi
 import eu.acolombo.roxiemon.data.PokemonRepository
 import eu.acolombo.roxiemon.presentation.PokemonListViewModel
 import eu.acolombo.roxiemon.presentation.pokemon.PokemonViewModel

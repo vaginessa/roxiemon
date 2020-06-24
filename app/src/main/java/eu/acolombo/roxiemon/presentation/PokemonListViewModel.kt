@@ -1,6 +1,5 @@
 package eu.acolombo.roxiemon.presentation
 
-import android.util.Log
 import com.ww.roxie.BaseViewModel
 import com.ww.roxie.Reducer
 import eu.acolombo.roxiemon.data.PokemonRepository

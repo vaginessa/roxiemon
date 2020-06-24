@@ -3,11 +3,13 @@ package eu.acolombo.roxiemon.presentation
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import eu.acolombo.roxiemon.R
-import eu.acolombo.roxiemon.data.model.Pokemon
+import eu.acolombo.roxiemon.data.local.model.Pokemon
 
 class PokemonAdapter(val onClick: (id: Int) -> Unit = {} ) : RecyclerView.Adapter<PokemonAdapter.ViewHolder>() {
 
@@ -25,16 +27,18 @@ class PokemonAdapter(val onClick: (id: Int) -> Unit = {} ) : RecyclerView.Adapte
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.idView.text = item.id.toString()
-        holder.contentView.text = item.name
+        Glide.with(holder.view.context).load(item.image).into(holder.imageView);
+        holder.numberView.text = item.id.toString()
+        holder.nameView.text = item.name
         holder.view.setOnClickListener { onClick(item.id) }
     }
 
     override fun getItemCount(): Int = values.size
 
     inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        val idView: TextView = view.findViewById(R.id.item_number)
-        val contentView: TextView = view.findViewById(R.id.content)
+        val imageView: ImageView = view.findViewById(R.id.imagePokemon)
+        val numberView: TextView = view.findViewById(R.id.textNumber)
+        val nameView: TextView = view.findViewById(R.id.textName)
     }
 
     private fun replaceData(newValues: List<Pokemon>) =

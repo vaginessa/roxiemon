@@ -1,4 +1,4 @@
-package eu.acolombo.roxiemon.data.response
+package eu.acolombo.roxiemon.data.remote.response
 
 data class ListResponse<I : Item<T>, T>(
     val count: Int,

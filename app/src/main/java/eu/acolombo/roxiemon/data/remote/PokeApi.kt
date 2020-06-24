@@ -1,11 +1,11 @@
-package eu.acolombo.roxiemon.data
+package eu.acolombo.roxiemon.data.remote
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import eu.acolombo.roxiemon.data.model.Pokemon
-import eu.acolombo.roxiemon.data.model.Type
-import eu.acolombo.roxiemon.data.response.Item
-import eu.acolombo.roxiemon.data.response.ListResponse
+import eu.acolombo.roxiemon.data.remote.model.Pokemon
+import eu.acolombo.roxiemon.data.remote.model.Type
+import eu.acolombo.roxiemon.data.remote.response.Item
+import eu.acolombo.roxiemon.data.remote.response.ListResponse
 import io.reactivex.Observable
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

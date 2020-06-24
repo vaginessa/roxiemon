@@ -1,4 +1,4 @@
-package eu.acolombo.roxiemon.data.model
+package eu.acolombo.roxiemon.data.remote.model
 
 data class Type(
     val id: Int,

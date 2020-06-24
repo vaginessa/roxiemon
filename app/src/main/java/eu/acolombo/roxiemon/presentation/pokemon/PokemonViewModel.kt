@@ -4,7 +4,7 @@ import com.ww.roxie.BaseAction
 import com.ww.roxie.BaseState
 import com.ww.roxie.BaseViewModel
 import eu.acolombo.roxiemon.data.PokemonRepository
-import eu.acolombo.roxiemon.data.model.Pokemon
+import eu.acolombo.roxiemon.data.remote.model.Pokemon
 import eu.acolombo.roxiemon.presentation.pokemon.PokemonViewModel.Action
 import eu.acolombo.roxiemon.presentation.pokemon.PokemonViewModel.State
 

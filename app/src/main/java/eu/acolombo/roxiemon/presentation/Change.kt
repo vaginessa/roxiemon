@@ -1,6 +1,6 @@
 package eu.acolombo.roxiemon.presentation
 
-import eu.acolombo.roxiemon.data.model.Pokemon
+import eu.acolombo.roxiemon.data.local.model.Pokemon
 
 sealed class Change {
     object Loading : Change()

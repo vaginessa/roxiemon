@@ -8,11 +8,10 @@ import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import eu.acolombo.roxiemon.R
-import eu.acolombo.roxiemon.data.model.Pokemon
+import eu.acolombo.roxiemon.data.local.model.Pokemon
 import eu.acolombo.roxiemon.presentation.pokemon.PokemonFragment
 import kotlinx.android.synthetic.main.fragment_pokemon_list.*
 import org.koin.android.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class PokemonListFragment : Fragment(R.layout.fragment_pokemon_list) {
 
