@@ -6,5 +6,5 @@ sealed class Change {
     object Loading : Change()
     data class PokemonList(val pokemon: List<Pokemon>) : Change()
     data class Error(val throwable: Throwable?) : Change()
-    data class GoToPokemon(val id: Int) : Change()
+    data class OpenPokemon(val id: Int) : Change()
 }

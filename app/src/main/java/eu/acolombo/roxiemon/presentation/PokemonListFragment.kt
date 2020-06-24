@@ -12,12 +12,13 @@ import eu.acolombo.roxiemon.data.model.Pokemon
 import eu.acolombo.roxiemon.presentation.pokemon.PokemonFragment
 import kotlinx.android.synthetic.main.fragment_pokemon_list.*
 import org.koin.android.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class PokemonListFragment : Fragment(R.layout.fragment_pokemon_list) {
 
     private val viewModel: PokemonListViewModel by viewModel()
     private val pokemonAdapter = PokemonAdapter {
-        viewModel.dispatch(Action.OpenPokemon)
+        viewModel.dispatch(Action.OpenPokemon(it))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

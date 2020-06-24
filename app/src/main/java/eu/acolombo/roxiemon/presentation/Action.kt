@@ -4,5 +4,5 @@ import com.ww.roxie.BaseAction
 
 sealed class Action : BaseAction {
     object LoadPokemonList : Action()
-    object OpenPokemon : Action()
+    data class OpenPokemon(val id: Int) : Action()
 }

@@ -1,12 +1,18 @@
 package eu.acolombo.roxiemon.presentation
 
-import androidx.lifecycle.viewModelScope
+import android.util.Log
 import com.ww.roxie.BaseViewModel
 import com.ww.roxie.Reducer
 import eu.acolombo.roxiemon.data.PokemonRepository
-import kotlinx.coroutines.launch
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.ofType
+import io.reactivex.rxkotlin.plusAssign
+import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 
-class PokemonListViewModel(val pokemonRepository: PokemonRepository) : BaseViewModel<Action, State>() {
+class PokemonListViewModel(private val pokemonRepository: PokemonRepository) :
+    BaseViewModel<Action, State>() {
 
     override val initialState: State = State(isIdle = true)
 
@@ -25,8 +31,8 @@ class PokemonListViewModel(val pokemonRepository: PokemonRepository) : BaseViewM
             is Change.Error -> state.copy(
                 isLoading = false,
                 isError = true
-            )
-            is Change.GoToPokemon -> state.copy(
+            ).also { Timber.e(change.throwable) }
+            is Change.OpenPokemon -> state.copy(
                 isLoading = true,
                 goToPokemon = change.id,
                 isError = false,
@@ -36,7 +42,34 @@ class PokemonListViewModel(val pokemonRepository: PokemonRepository) : BaseViewM
     }
 
     init {
+        bindActions()
+
         dispatch(Action.LoadPokemonList)
+    }
+
+    private fun bindActions() {
+
+        val pokemonListChange = actions.ofType<Action.LoadPokemonList>()
+            .switchMap {
+                pokemonRepository.getPokemon()
+                    .subscribeOn(Schedulers.io())
+                    .toObservable()
+                    .map<Change> { Change.PokemonList(it) }
+                    .defaultIfEmpty(Change.PokemonList(emptyList()))
+                    .onErrorReturn { Change.Error(it) }
+                    .startWith(Change.Loading)
+            }
+
+        val pokemonDetailChange = actions.ofType<Action.OpenPokemon>()
+            .switchMap { Observable.just(Change.OpenPokemon(it.id)) }
+
+        disposables += Observable.merge(pokemonDetailChange, pokemonListChange)
+            .scan(initialState, reducer)
+            .filter { !it.isIdle }
+            .distinctUntilChanged()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(state::setValue, Timber::e)
+
     }
 
 

@@ -5,9 +5,13 @@ import com.ww.roxie.BaseState
 import com.ww.roxie.BaseViewModel
 import eu.acolombo.roxiemon.data.PokemonRepository
 import eu.acolombo.roxiemon.data.model.Pokemon
-import eu.acolombo.roxiemon.presentation.pokemon.PokemonViewModel.*
+import eu.acolombo.roxiemon.presentation.pokemon.PokemonViewModel.Action
+import eu.acolombo.roxiemon.presentation.pokemon.PokemonViewModel.State
 
-class PokemonViewModel(val id: Int, val pokemonRepository: PokemonRepository) : BaseViewModel<Action, State>() {
+class PokemonViewModel(
+    val id: Int,
+    val pokemonRepository: PokemonRepository
+) : BaseViewModel<Action, State>() {
 
     override val initialState: State = State(isIdle = true)
 
@@ -27,7 +31,5 @@ class PokemonViewModel(val id: Int, val pokemonRepository: PokemonRepository) : 
         val isLoading: Boolean = false,
         val isError: Boolean = false
     ) : BaseState
-
-
 
 }

@@ -1,5 +1,5 @@
 package eu.acolombo.roxiemon.data.response
 
-interface Item<T> {
-    val url: String
+open class Item<T>(val url: String) {
+    class Named<T>(url: String, val name: String) : Item<T>(url)
 }
