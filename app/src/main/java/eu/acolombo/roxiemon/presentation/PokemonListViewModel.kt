@@ -1,8 +1,13 @@
 package eu.acolombo.roxiemon.presentation
 
+import com.ww.roxie.BaseAction
+import com.ww.roxie.BaseState
 import com.ww.roxie.BaseViewModel
 import com.ww.roxie.Reducer
 import eu.acolombo.roxiemon.data.PokemonRepository
+import eu.acolombo.roxiemon.data.local.model.Pokemon
+import eu.acolombo.roxiemon.presentation.PokemonListViewModel.Action
+import eu.acolombo.roxiemon.presentation.PokemonListViewModel.State
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.ofType
@@ -10,8 +15,9 @@ import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
-class PokemonListViewModel(private val pokemonRepository: PokemonRepository) :
-    BaseViewModel<Action, State>() {
+class PokemonListViewModel(
+    private val pokemonRepository: PokemonRepository
+) : BaseViewModel<Action, State>() {
 
     override val initialState: State = State(isIdle = true)
 
@@ -32,7 +38,7 @@ class PokemonListViewModel(private val pokemonRepository: PokemonRepository) :
                 isError = true
             ).also { Timber.e(change.throwable) }
             is Change.OpenPokemon -> state.copy(
-                isLoading = true,
+                isLoading = false,
                 goToPokemon = change.id,
                 isError = false,
                 isIdle = false
@@ -41,13 +47,6 @@ class PokemonListViewModel(private val pokemonRepository: PokemonRepository) :
     }
 
     init {
-        bindActions()
-
-        dispatch(Action.LoadPokemonList)
-    }
-
-    private fun bindActions() {
-
         val pokemonListChange = actions.ofType<Action.LoadPokemonList>()
             .switchMap {
                 pokemonRepository.getPokemon()
@@ -69,7 +68,27 @@ class PokemonListViewModel(private val pokemonRepository: PokemonRepository) :
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(state::setValue, Timber::e)
 
+        dispatch(Action.LoadPokemonList)
     }
 
+    sealed class Action : BaseAction {
+        object LoadPokemonList : Action()
+        data class OpenPokemon(val id: Int) : Action()
+    }
+
+    sealed class Change {
+        object Loading : Change()
+        data class PokemonList(val pokemon: List<Pokemon>) : Change()
+        data class Error(val throwable: Throwable?) : Change()
+        data class OpenPokemon(val id: Int) : Change()
+    }
+
+    data class State(
+        val pokemon: List<Pokemon> = listOf(),
+        val isIdle: Boolean = false,
+        val isLoading: Boolean = false,
+        val isError: Boolean = false,
+        val goToPokemon: Int? = null
+    ) : BaseState
 
 }

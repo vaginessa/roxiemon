@@ -21,7 +21,10 @@ class PokemonFragment : BottomSheetDialogFragment() {
     }
 
     private val viewModel: PokemonViewModel by viewModel {
-        parametersOf(this, arguments?.getInt(POKEMON_ID) ?: throw IllegalArgumentException("id is required"))
+        parametersOf(
+            this,
+            arguments?.getInt(POKEMON_ID) ?: throw IllegalArgumentException("id is required")
+        )
     }
 
     override fun onCreateView(
