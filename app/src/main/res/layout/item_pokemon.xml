@@ -23,8 +23,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/spacing_s"
         android:alpha=".4"
-        android:textAppearance="?attr/textAppearanceListItem"
-        android:textSize="12sp"
+        android:gravity="center"
+        android:textAppearance="?attr/textAppearanceListItemSmall"
         android:textStyle="bold"
         tools:text="1" />
 
@@ -36,4 +36,5 @@
         android:textAppearance="?attr/textAppearanceListItem"
         android:textSize="13sp"
         tools:text="bulbasaur" />
+
 </LinearLayout>

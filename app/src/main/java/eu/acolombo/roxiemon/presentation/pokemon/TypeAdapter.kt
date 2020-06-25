@@ -1,4 +1,4 @@
-package eu.acolombo.roxiemon.presentation
+package eu.acolombo.roxiemon.presentation.pokemon
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,26 +8,25 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import eu.acolombo.roxiemon.R
-import eu.acolombo.roxiemon.data.local.model.Pokemon
+import eu.acolombo.roxiemon.data.local.model.Type
 import eu.acolombo.roxiemon.util.load
 
-class PokemonAdapter(val onClick: (id: Int) -> Unit = {}) :
-    RecyclerView.Adapter<PokemonAdapter.ViewHolder>() {
+class TypeAdapter(val onClick: (id: Int) -> Unit = {}) :
+    RecyclerView.Adapter<TypeAdapter.ViewHolder>() {
 
-    private val _values: MutableList<Pokemon> = mutableListOf()
-    var values: List<Pokemon>
+    private val _values: MutableList<Type> = mutableListOf()
+    var values: List<Type>
         get() = _values
         set(value) {
             replaceData(value)
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_pokemon, parent, false))
+        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_type, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.imageView.load(item.imageBack)
-        holder.numberView.text = item.id.toString()
+        holder.imageView.load(item.icon)
         holder.nameView.text = item.name
         holder.view.setOnClickListener { onClick(item.id) }
     }
@@ -35,12 +34,11 @@ class PokemonAdapter(val onClick: (id: Int) -> Unit = {}) :
     override fun getItemCount(): Int = values.size
 
     inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        val imageView: ImageView = view.findViewById(R.id.imagePokemon)
-        val numberView: TextView = view.findViewById(R.id.textNumber)
+        val imageView: ImageView = view.findViewById(R.id.imageType)
         val nameView: TextView = view.findViewById(R.id.textName)
     }
 
-    private fun replaceData(newValues: List<Pokemon>) =
+    private fun replaceData(newValues: List<Type>) =
         DiffUtil.calculateDiff(object : DiffUtil.Callback() {
 
             override fun areItemsTheSame(oldPos: Int, newPos: Int) =
@@ -55,7 +53,7 @@ class PokemonAdapter(val onClick: (id: Int) -> Unit = {}) :
         }).let { result ->
             _values.clear()
             _values.addAll(newValues)
-            result.dispatchUpdatesTo(this@PokemonAdapter)
+            result.dispatchUpdatesTo(this@TypeAdapter)
         }
 
 }

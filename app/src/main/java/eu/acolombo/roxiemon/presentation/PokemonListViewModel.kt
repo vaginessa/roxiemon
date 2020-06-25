@@ -8,7 +8,6 @@ import eu.acolombo.roxiemon.data.PokemonRepository
 import eu.acolombo.roxiemon.data.local.model.Pokemon
 import eu.acolombo.roxiemon.presentation.PokemonListViewModel.Action
 import eu.acolombo.roxiemon.presentation.PokemonListViewModel.State
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.ofType
 import io.reactivex.rxkotlin.plusAssign
@@ -37,19 +36,15 @@ class PokemonListViewModel(
                 isLoading = false,
                 isError = true
             ).also { Timber.e(change.throwable) }
-            is Change.OpenPokemon -> state.copy(
-                isLoading = false,
-                goToPokemon = change.id,
-                isError = false,
-                isIdle = false
-            )
         }
     }
 
     init {
+        var page = 0
+
         val pokemonListChange = actions.ofType<Action.LoadPokemonList>()
             .switchMap {
-                pokemonRepository.getPokemon()
+                pokemonRepository.getPokemonPage(page++)
                     .subscribeOn(Schedulers.io())
                     .toObservable()
                     .map<Change> { Change.PokemonList(it) }
@@ -58,10 +53,7 @@ class PokemonListViewModel(
                     .startWith(Change.Loading)
             }
 
-        val pokemonDetailChange = actions.ofType<Action.OpenPokemon>()
-            .switchMap { Observable.just(Change.OpenPokemon(it.id)) }
-
-        disposables += Observable.merge(pokemonDetailChange, pokemonListChange)
+        disposables += pokemonListChange
             .scan(initialState, reducer)
             .filter { !it.isIdle }
             .distinctUntilChanged()
@@ -73,22 +65,19 @@ class PokemonListViewModel(
 
     sealed class Action : BaseAction {
         object LoadPokemonList : Action()
-        data class OpenPokemon(val id: Int) : Action()
     }
 
     sealed class Change {
         object Loading : Change()
         data class PokemonList(val pokemon: List<Pokemon>) : Change()
         data class Error(val throwable: Throwable?) : Change()
-        data class OpenPokemon(val id: Int) : Change()
     }
 
     data class State(
         val pokemon: List<Pokemon> = listOf(),
         val isIdle: Boolean = false,
         val isLoading: Boolean = false,
-        val isError: Boolean = false,
-        val goToPokemon: Int? = null
+        val isError: Boolean = false
     ) : BaseState
 
 }

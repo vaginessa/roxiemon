@@ -9,7 +9,7 @@ import io.reactivex.schedulers.Schedulers
 
 class PokemonRepository(private val pokeApi: PokeApi) {
 
-    fun getPokemon(): Single<List<Pokemon>> = pokeApi.getPokemon()
+    fun getPokemonPage(page: Int): Single<List<Pokemon>> = pokeApi.getPokemon()
         .subscribeOn(Schedulers.io())
         .flatMap { it.results.toObservable() }
         .flatMap { pokeApi.getPokemon(it.name).subscribeOn(Schedulers.io()) }
@@ -22,7 +22,7 @@ class PokemonRepository(private val pokeApi: PokeApi) {
             pokemon.types.toObservable()
                 .flatMap { pokeApi.getType(it.type.name) }
                 .map { Type(it.id, it.name) }
-                .toSortedList().toObservable()
+                .toList().toObservable()
         }, { pokemon, type -> Pokemon(pokemon, type) })
         .singleOrError()
 

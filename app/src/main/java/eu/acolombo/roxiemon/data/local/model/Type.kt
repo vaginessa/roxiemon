@@ -9,6 +9,11 @@ data class Type(
 ) {
     @DrawableRes
     val icon: Int = when (name) {
+        "bug" -> R.drawable.ic_type_bug
+        "fire" -> R.drawable.ic_type_fire
+        "grass" -> R.drawable.ic_type_grass
+        "ice" -> R.drawable.ic_type_ice
+        "normal" -> R.drawable.ic_type_normal
         "water" -> R.drawable.ic_type_water
         else -> R.drawable.ic_type_unknown
     }

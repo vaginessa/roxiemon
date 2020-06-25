@@ -1,20 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".presentation.pokemon.PokemonFragment">
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_m">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spacing_m"
-        android:gravity="center"
-        android:text="Detail"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:id="@+id/textName"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        tools:text="bulbasaur" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/textNumber"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/spacing_s"
+        android:alpha=".4"
+        android:gravity="center"
+        android:textAppearance="?attr/textAppearanceListItemSecondary"
+        android:textStyle="bold"
+        tools:text="1" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height">
+
+        <ImageView
+            android:id="@+id/imagePokemon"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/item_height"
+            android:contentDescription="@string/pokemon_image"
+            android:scaleType="fitCenter"
+            tools:src="@mipmap/ic_launcher_round" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerTypes"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="6"
+        tools:listitem="@layout/item_type" />
+
+</LinearLayout>

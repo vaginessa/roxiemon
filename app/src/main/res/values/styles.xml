@@ -5,6 +5,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="fontFamily">@font/karla</item>
         <item name="bottomSheetDialogTheme">@style/Roxiemon.BottomSheetDialog</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
     </style>
 
     <style name="Roxiemon.BottomSheetDialog" parent="Theme.Design.BottomSheetDialog">
