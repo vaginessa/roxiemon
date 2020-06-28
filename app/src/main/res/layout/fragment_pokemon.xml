@@ -11,15 +11,15 @@
     <TextView
         android:id="@+id/textName"
         android:layout_width="wrap_content"
-        android:layout_height="32dp"
+        android:layout_height="@dimen/item_title_height"
         android:textAllCaps="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         tools:text="bulbasaur" />
 
     <TextView
         android:id="@+id/textNumber"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/item_number_height"
         android:layout_gravity="center"
         android:layout_margin="@dimen/spacing_s"
         android:alpha=".4"
@@ -31,12 +31,12 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/item_height">
+        android:layout_height="@dimen/item_image_height">
 
         <ImageView
             android:id="@+id/imagePokemon"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/item_height"
+            android:layout_height="match_parent"
             android:contentDescription="@string/pokemon_image"
             android:scaleType="fitCenter"
             tools:src="@mipmap/ic_launcher_round" />
@@ -45,8 +45,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerTypes"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/item_types_height"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="6"

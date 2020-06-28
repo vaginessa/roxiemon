@@ -1,5 +1,6 @@
 package eu.acolombo.roxiemon.data.local.model
 
+import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import eu.acolombo.roxiemon.R
 
@@ -15,6 +16,8 @@ data class Type(
         "ice" -> R.drawable.ic_type_ice
         "normal" -> R.drawable.ic_type_normal
         "water" -> R.drawable.ic_type_water
+        "poison" -> R.drawable.ic_type_poison
+        "flying" -> R.drawable.ic_type_flying
         else -> R.drawable.ic_type_unknown
     }
 }
