@@ -13,6 +13,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/spacing_m"
         android:layout_marginRight="@dimen/spacing_m"
+        android:scrollbars="vertical"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="3"
         tools:context=".presentation.PokemonListFragment"

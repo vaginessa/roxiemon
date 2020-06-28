@@ -9,7 +9,7 @@ import io.reactivex.schedulers.Schedulers
 
 class PokemonRepository(private val pokeApi: PokeApi) {
 
-    fun getPokemonPage(page: Int): Single<List<Pokemon>> = pokeApi.getPokemon()
+    fun getPokemonPage(page: Int = 0): Single<List<Pokemon>> = pokeApi.getPokemon(offset = page * PokeApi.PAGE_SIZE)
         .subscribeOn(Schedulers.io())
         .flatMap { it.results.toObservable() }
         .flatMap { pokeApi.getPokemon(it.name).subscribeOn(Schedulers.io()) }

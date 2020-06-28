@@ -5,34 +5,48 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import eu.acolombo.roxiemon.R
 import eu.acolombo.roxiemon.data.local.model.Pokemon
+import eu.acolombo.roxiemon.presentation.PokemonListViewModel.Action.LoadMorePokemon
 import eu.acolombo.roxiemon.presentation.pokemon.PokemonFragment
+import eu.acolombo.roxiemon.util.doOnScrolled
 import kotlinx.android.synthetic.main.fragment_pokemon_list.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class PokemonListFragment : Fragment(R.layout.fragment_pokemon_list) {
 
-    private val viewModel: PokemonListViewModel by viewModel()
+    companion object {
+        private const val PAGING_THRESHOLD = 9
+    }
+
+    private val listViewModel: PokemonListViewModel by viewModel()
     private val pokemonAdapter = PokemonAdapter {
-        val fragment = PokemonFragment.newInstance(it)
-        fragment.show(requireActivity().supportFragmentManager, PokemonFragment::class.java.name)
+        PokemonFragment.newInstance(it)
+            .show(requireActivity().supportFragmentManager, PokemonFragment::class.java.name)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         refresh.isEnabled = false
         recycler.adapter = pokemonAdapter
+        recycler.doOnScrolled { _, _, _ ->
+            val lm = recycler.layoutManager as GridLayoutManager
+            val lastVisibleItem = lm.findLastVisibleItemPosition()
+            if (!refresh.isRefreshing && lm.itemCount <= (lastVisibleItem + PAGING_THRESHOLD)) {
+                listViewModel.dispatch(LoadMorePokemon)
+            }
+        }
 
-        viewModel.observableState.observe(viewLifecycleOwner, Observer { state ->
+        listViewModel.observableState.observe(viewLifecycleOwner, Observer { state ->
             showLoading(state.isLoading)
             showError(state.isError)
             showPokemon(state.pokemon)
         })
     }
 
-    private fun showPokemon(pokemon: List<Pokemon>) {
-        pokemonAdapter.values = pokemon
+    private fun showPokemon(pokemon: List<Pokemon>, replace: Boolean = false) {
+        if (replace) pokemonAdapter.replaceData(pokemon) else pokemonAdapter.addData(pokemon)
     }
 
     private fun showError(error: Boolean) {

@@ -14,12 +14,7 @@ import eu.acolombo.roxiemon.util.load
 class PokemonAdapter(val onClick: (id: Int) -> Unit = {}) :
     RecyclerView.Adapter<PokemonAdapter.ViewHolder>() {
 
-    private val _values: MutableList<Pokemon> = mutableListOf()
-    var values: List<Pokemon>
-        get() = _values
-        set(value) {
-            replaceData(value)
-        }
+    private val values: MutableList<Pokemon> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_pokemon, parent, false))
@@ -40,11 +35,13 @@ class PokemonAdapter(val onClick: (id: Int) -> Unit = {}) :
         val nameView: TextView = view.findViewById(R.id.textName)
     }
 
-    private fun replaceData(newValues: List<Pokemon>) =
+    fun addData(newValues: List<Pokemon>) =
+        values.addAll(newValues).also { if (it) notifyDataSetChanged() }
+
+    fun replaceData(newValues: List<Pokemon>) =
         DiffUtil.calculateDiff(object : DiffUtil.Callback() {
 
-            override fun areItemsTheSame(oldPos: Int, newPos: Int) =
-                values[oldPos].id == newValues[newPos].id
+            override fun areItemsTheSame(oldPos: Int, newPos: Int) = values[oldPos].id == newValues[newPos].id
 
             override fun getOldListSize() = values.size
 
@@ -52,9 +49,9 @@ class PokemonAdapter(val onClick: (id: Int) -> Unit = {}) :
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) = false
 
-        }).let { result ->
-            _values.clear()
-            _values.addAll(newValues)
+        }).also { result ->
+            values.clear()
+            values.addAll(newValues)
             result.dispatchUpdatesTo(this@PokemonAdapter)
         }
 

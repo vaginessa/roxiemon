@@ -1,23 +1,37 @@
 package eu.acolombo.roxiemon.data.local.model
 
-import androidx.annotation.ColorInt
-import androidx.annotation.DrawableRes
-import eu.acolombo.roxiemon.R
-
 data class Type(
     val id: Int,
     val name: String
 ) {
-    @DrawableRes
-    val icon: Int = when (name) {
-        "bug" -> R.drawable.ic_type_bug
-        "fire" -> R.drawable.ic_type_fire
-        "grass" -> R.drawable.ic_type_grass
-        "ice" -> R.drawable.ic_type_ice
-        "normal" -> R.drawable.ic_type_normal
-        "water" -> R.drawable.ic_type_water
-        "poison" -> R.drawable.ic_type_poison
-        "flying" -> R.drawable.ic_type_flying
-        else -> R.drawable.ic_type_unknown
+    val emoji: String = when (name) {
+        "normal" -> "\uD83D\uDE10"
+        "fire" -> "\uD83D\uDD25"
+
+        "fighting" -> "\uD83E\uDD4A"
+        "water" -> "\uD83D\uDCA7"
+
+        "flying" -> "\u2708\uFE0f"
+        "grass" -> "\uD83E\uDD66"
+
+        "poison" -> "\u2623\uFE0F"
+        "electric" -> "\u26A1"
+
+        "ground" -> "\uD83C\uDF31"
+        "psychic" -> "\uD83D\uDD2E"
+
+        "rock" -> "\uD83E\uDD18"
+        "ice" -> "\uD83E\uDDCA"
+
+        "bug" -> "\uD83D\uDC1E"
+        "dragon" -> "\uD83D\uDC32"
+
+        "ghost" -> "\uD83D\uDC7B"
+        "dark" -> "\uD83D\uDD76"
+
+        "steel" -> "\uD83D\uDD29"
+        "fairy" -> "\uD83E\uDDDA"
+
+        else -> "\u2753"
     }
 }

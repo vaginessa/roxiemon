@@ -46,9 +46,9 @@ class PokemonViewModel(
                 pokemonRepository.getPokemon(it.id)
                     .subscribeOn(Schedulers.io())
                     .toObservable()
-                    .map<Change> { Change.PokemonDetail(it) }
+                    .map<Change> { poke -> Change.PokemonDetail(poke) }
                     .defaultIfEmpty(Change.Error(NullPointerException("empty")))
-                    .onErrorReturn { Change.Error(it) }
+                    .onErrorReturn { err -> Change.Error(err) }
                     .startWith(Change.Loading)
             }
 

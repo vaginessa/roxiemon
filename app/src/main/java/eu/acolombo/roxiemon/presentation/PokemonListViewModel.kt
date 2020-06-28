@@ -41,8 +41,9 @@ class PokemonListViewModel(
 
     init {
         var page = 0
+        Timber.d("init ${this.hashCode()}")
 
-        val pokemonListChange = actions.ofType<Action.LoadPokemonList>()
+        val pokemonListChange = actions.ofType<Action.LoadMorePokemon>()
             .switchMap {
                 pokemonRepository.getPokemonPage(page++)
                     .subscribeOn(Schedulers.io())
@@ -60,11 +61,11 @@ class PokemonListViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(state::setValue, Timber::e)
 
-        dispatch(Action.LoadPokemonList)
+        dispatch(Action.LoadMorePokemon)
     }
 
     sealed class Action : BaseAction {
-        object LoadPokemonList : Action()
+        object LoadMorePokemon : Action()
     }
 
     sealed class Change {

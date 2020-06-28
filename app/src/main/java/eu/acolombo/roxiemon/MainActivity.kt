@@ -9,7 +9,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        supportFragmentManager.commit { replace(R.id.container, PokemonListFragment()) }
+        supportFragmentManager.commit { replace(R.id.container, PokemonListFragment(), PokemonListFragment::class.java.name) }
     }
 
 }

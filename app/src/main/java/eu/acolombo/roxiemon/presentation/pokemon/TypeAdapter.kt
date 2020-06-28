@@ -3,13 +3,11 @@ package eu.acolombo.roxiemon.presentation.pokemon
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import eu.acolombo.roxiemon.R
 import eu.acolombo.roxiemon.data.local.model.Type
-import eu.acolombo.roxiemon.util.load
 
 class TypeAdapter(val onClick: (id: Int) -> Unit = {}) :
     RecyclerView.Adapter<TypeAdapter.ViewHolder>() {
@@ -26,7 +24,7 @@ class TypeAdapter(val onClick: (id: Int) -> Unit = {}) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.imageView.load(item.icon)
+        holder.emojiView.text = item.emoji
         holder.nameView.text = item.name
         holder.view.setOnClickListener { onClick(item.id) }
     }
@@ -34,7 +32,7 @@ class TypeAdapter(val onClick: (id: Int) -> Unit = {}) :
     override fun getItemCount(): Int = values.size
 
     inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        val imageView: ImageView = view.findViewById(R.id.imageType)
+        val emojiView: TextView = view.findViewById(R.id.textEmoji)
         val nameView: TextView = view.findViewById(R.id.textName)
     }
 
