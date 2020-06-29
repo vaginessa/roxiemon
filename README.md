@@ -4,4 +4,4 @@
 ## Screenshots
 <img src="screenshots/1.jpg" width="280" alt="Light List"> <img src="screenshots/2.jpg" width="280" alt="Light Detail">
 
-<img src="screenshots/3.jpg" width="280" alt="Dark List"><img src="screenshots/4.jpg" width="280" alt="Dark Detail">
+<img src="screenshots/3.jpg" width="280" alt="Dark List"> <img src="screenshots/4.jpg" width="280" alt="Dark Detail">
