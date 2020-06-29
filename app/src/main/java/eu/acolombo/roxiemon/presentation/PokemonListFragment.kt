@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import eu.acolombo.roxiemon.R
 import eu.acolombo.roxiemon.data.local.model.Pokemon
 import eu.acolombo.roxiemon.presentation.PokemonListViewModel.Action.LoadMorePokemon
@@ -24,7 +23,6 @@ class PokemonListFragment : Fragment(R.layout.fragment_pokemon_list) {
     private val viewModel: PokemonListViewModel by sharedViewModel()
     private lateinit var pokemonAdapter: PokemonAdapter
     private lateinit var gridManager: GridLayoutManager
-    private var recyclerListener: RecyclerView.OnScrollListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,35 +41,27 @@ class PokemonListFragment : Fragment(R.layout.fragment_pokemon_list) {
             adapter = pokemonAdapter
             layoutManager = gridManager
             scrollToPosition(viewModel.currentScrollPosition)
+            recycler.doOnScrolled { _, _, _ ->
+                val firstPosition = gridManager.findFirstCompletelyVisibleItemPosition()
+                val lastPosition = gridManager.findLastVisibleItemPosition()
+                viewModel.currentScrollPosition = firstPosition
+
+                if (!refresh.isRefreshing
+                    && gridManager.itemCount <= (lastPosition + PAGING_THRESHOLD)
+                    && viewModel.askForMore
+                ) viewModel.dispatch(LoadMorePokemon)
+            }
         }
 
         viewModel.observableState.observe(viewLifecycleOwner, Observer { state ->
             showLoading(state.isLoading)
             showError(state.isError)
             showPokemon(state.pokemon)
-            showMore(state.more)
         })
     }
 
     private fun showPokemon(pokemon: List<Pokemon>, replace: Boolean = false) {
         if (replace) pokemonAdapter.replaceData(pokemon) else pokemonAdapter.addData(pokemon)
-    }
-
-    private fun showMore(more: Boolean) {
-        if (!more) {
-            recyclerListener?.let { recycler.removeOnScrollListener(it) }
-        } else {
-            recyclerListener ?: run {
-                recyclerListener = recycler.doOnScrolled { _, _, _ ->
-                    val firstPosition = gridManager.findFirstCompletelyVisibleItemPosition()
-                    val lastPosition = gridManager.findLastVisibleItemPosition()
-                    viewModel.currentScrollPosition = firstPosition
-                    if (!refresh.isRefreshing && gridManager.itemCount <= (lastPosition + PAGING_THRESHOLD)) {
-                        viewModel.dispatch(LoadMorePokemon)
-                    }
-                }
-            }
-        }
     }
 
     private fun showError(throwable: Throwable?) {

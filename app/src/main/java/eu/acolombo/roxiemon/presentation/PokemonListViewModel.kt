@@ -20,7 +20,6 @@ class PokemonListViewModel(
     private val pokemonRepository: PokemonRepository
 ) : BaseViewModel<Action, State>() {
 
-    var currentScrollPosition: Int = 0
     override val initialState: State = State(isIdle = true)
 
     private val reducer: Reducer<State, Change> = { state, change ->
@@ -32,8 +31,7 @@ class PokemonListViewModel(
             )
             is Change.PokemonList -> state.copy(
                 isLoading = false,
-                pokemon = change.pokemon,
-                more = change.more
+                pokemon = change.pokemon
             )
             is Change.Error -> state.copy(
                 isLoading = false,
@@ -44,18 +42,23 @@ class PokemonListViewModel(
 
     private val _pokemonList: MutableList<Pokemon> = mutableListOf()
     val pokemonList: List<Pokemon> = _pokemonList
+    var currentScrollPosition: Int = 0
+    var askForMore: Boolean = true
+        private set
 
     init {
         var page = 0
 
-        val pokemonListChange : Observable<Change> = actions.ofType<Action.LoadMorePokemon>()
+        val pokemonListChange: Observable<Change> = actions.ofType<Action.LoadMorePokemon>()
             .switchMap {
                 pokemonRepository.getPokemonPage(page++)
                     .subscribeOn(Schedulers.io())
                     .toObservable()
                     .map<Change> {
                         _pokemonList.addAll(it)
-                        Change.PokemonList(it, it.size == PokeApi.PAGE_SIZE)
+                        askForMore = it.size == PokeApi.PAGE_SIZE
+                        Timber.d("more ${it.size}")
+                        Change.PokemonList(it)
                     }
                     .defaultIfEmpty(Change.PokemonList(emptyList()))
                     .onErrorReturn { Change.Error(it) }
@@ -78,13 +81,12 @@ class PokemonListViewModel(
 
     sealed class Change {
         object Loading : Change()
-        data class PokemonList(val pokemon: List<Pokemon>, val more: Boolean = true) : Change()
+        data class PokemonList(val pokemon: List<Pokemon>) : Change()
         data class Error(val throwable: Throwable?) : Change()
     }
 
     data class State(
         val pokemon: List<Pokemon> = listOf(),
-        val more: Boolean = true,
         val isIdle: Boolean = false,
         val isLoading: Boolean = false,
         val isError: Throwable? = null
