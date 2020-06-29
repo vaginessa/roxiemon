@@ -5,8 +5,8 @@ import eu.acolombo.roxiemon.data.remote.model.Pokemon as RemotePokemon
 data class Pokemon(
     val id: Int,
     val name: String,
-    val imageFront: String,
-    val imageBack: String,
+    val imageFront: String?,
+    val imageBack: String?,
     var types: List<Type> = emptyList()
 ) : Comparable<Pokemon> {
 

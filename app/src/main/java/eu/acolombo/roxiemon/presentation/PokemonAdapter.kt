@@ -11,17 +11,24 @@ import eu.acolombo.roxiemon.R
 import eu.acolombo.roxiemon.data.local.model.Pokemon
 import eu.acolombo.roxiemon.util.load
 
-class PokemonAdapter(val onClick: (id: Int) -> Unit = {}) :
+class PokemonAdapter(initial: List<Pokemon>, val onClick: (id: Int) -> Unit = {}) :
     RecyclerView.Adapter<PokemonAdapter.ViewHolder>() {
 
-    private val values: MutableList<Pokemon> = mutableListOf()
+    private val values: MutableList<Pokemon> = initial.toMutableList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_pokemon, parent, false))
+        ViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.item_pokemon, parent, false)
+        )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.imageView.load(item.imageBack)
+        (item.imageBack ?: item.imageFront)?.let { image ->
+            holder.imageView.load(image)
+            holder.imageView.visibility = View.VISIBLE
+        } ?: run {
+            holder.imageView.visibility = View.INVISIBLE
+        }
         holder.numberView.text = item.id.toString()
         holder.nameView.text = item.name
         holder.view.setOnClickListener { onClick(item.id) }
@@ -41,7 +48,8 @@ class PokemonAdapter(val onClick: (id: Int) -> Unit = {}) :
     fun replaceData(newValues: List<Pokemon>) =
         DiffUtil.calculateDiff(object : DiffUtil.Callback() {
 
-            override fun areItemsTheSame(oldPos: Int, newPos: Int) = values[oldPos].id == newValues[newPos].id
+            override fun areItemsTheSame(oldPos: Int, newPos: Int) =
+                values[oldPos].id == newValues[newPos].id
 
             override fun getOldListSize() = values.size
 

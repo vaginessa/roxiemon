@@ -6,8 +6,10 @@ import com.ww.roxie.BaseViewModel
 import com.ww.roxie.Reducer
 import eu.acolombo.roxiemon.data.PokemonRepository
 import eu.acolombo.roxiemon.data.local.model.Pokemon
+import eu.acolombo.roxiemon.data.remote.PokeApi
 import eu.acolombo.roxiemon.presentation.PokemonListViewModel.Action
 import eu.acolombo.roxiemon.presentation.PokemonListViewModel.State
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.ofType
 import io.reactivex.rxkotlin.plusAssign
@@ -18,6 +20,7 @@ class PokemonListViewModel(
     private val pokemonRepository: PokemonRepository
 ) : BaseViewModel<Action, State>() {
 
+    var currentScrollPosition: Int = 0
     override val initialState: State = State(isIdle = true)
 
     private val reducer: Reducer<State, Change> = { state, change ->
@@ -25,30 +28,35 @@ class PokemonListViewModel(
             is Change.Loading -> state.copy(
                 isIdle = false,
                 isLoading = true,
-                pokemon = emptyList(),
-                isError = false
+                pokemon = emptyList()
             )
             is Change.PokemonList -> state.copy(
                 isLoading = false,
-                pokemon = change.pokemon
+                pokemon = change.pokemon,
+                more = change.more
             )
             is Change.Error -> state.copy(
                 isLoading = false,
-                isError = true
+                isError = change.throwable
             ).also { Timber.e(change.throwable) }
         }
     }
 
+    private val _pokemonList: MutableList<Pokemon> = mutableListOf()
+    val pokemonList: List<Pokemon> = _pokemonList
+
     init {
         var page = 0
-        Timber.d("init ${this.hashCode()}")
 
-        val pokemonListChange = actions.ofType<Action.LoadMorePokemon>()
+        val pokemonListChange : Observable<Change> = actions.ofType<Action.LoadMorePokemon>()
             .switchMap {
                 pokemonRepository.getPokemonPage(page++)
                     .subscribeOn(Schedulers.io())
                     .toObservable()
-                    .map<Change> { Change.PokemonList(it) }
+                    .map<Change> {
+                        _pokemonList.addAll(it)
+                        Change.PokemonList(it, it.size == PokeApi.PAGE_SIZE)
+                    }
                     .defaultIfEmpty(Change.PokemonList(emptyList()))
                     .onErrorReturn { Change.Error(it) }
                     .startWith(Change.Loading)
@@ -70,15 +78,16 @@ class PokemonListViewModel(
 
     sealed class Change {
         object Loading : Change()
-        data class PokemonList(val pokemon: List<Pokemon>) : Change()
+        data class PokemonList(val pokemon: List<Pokemon>, val more: Boolean = true) : Change()
         data class Error(val throwable: Throwable?) : Change()
     }
 
     data class State(
         val pokemon: List<Pokemon> = listOf(),
+        val more: Boolean = true,
         val isIdle: Boolean = false,
         val isLoading: Boolean = false,
-        val isError: Boolean = false
+        val isError: Throwable? = null
     ) : BaseState
 
 }

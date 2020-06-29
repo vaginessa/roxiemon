@@ -47,7 +47,7 @@ class PokemonFragment : BottomSheetDialogFragment() {
     }
 
     private fun showPokemon(pokemon: Pokemon) {
-        imagePokemon.load(pokemon.imageFront)
+        pokemon.imageFront?.let { image -> imagePokemon.load(image) }
         textNumber.text = pokemon.id.toString()
         textName.text = pokemon.name
         typeAdapter.values = pokemon.types
